@@ -203,6 +203,16 @@ execscript(char *cmd)
   return smprintf("%s", retval);
 }
 
+char *
+networkstatus()
+{
+  /* char *network = execscript("nmcli -f SSID,IN-USE device wifi | grep '*'"); */
+  /* char *network = execscript("nmcli -t -f NAME c show --active"); */
+  char *ret = execscript("nmcli");
+
+  return smprintf("%s", ret);
+}
+
 int
 main(void)
 {
@@ -210,38 +220,41 @@ main(void)
   char *avgs;
   char *fastavg;
   char *bat;
-  char *tmhel;
   char *t0;
   char *t1;
   char *kbmap;
-  char *surfs;
+
+  char *tmhel;
+  char *network;
 
   if (!(dpy = XOpenDisplay(NULL))) {
     fprintf(stderr, "dwmstatus: cannot open display.\n");
     return 1;
   }
 
-  for (;;sleep(30)) {
+  for (;;sleep(10)) {
     avgs = loadavg();
     fastavg = loadfastavg();
     bat = getbattery("/sys/class/power_supply/BAT0");
-    tmhel = mktimes("%H:%M", tzhelsinki);
     kbmap = execscript("setxkbmap -query | grep layout | cut -d':' -f 2- | tr -d ' '");
-    surfs = execscript("surf-status");
     t0 = gettemperature("/sys/devices/virtual/thermal/thermal_zone0", "temp");
     t1 = gettemperature("/sys/devices/virtual/thermal/thermal_zone1", "temp");
 
-    status = smprintf("| Temp: %s | Load: %s | Kb: %s | Bat: %s | Time: %s", t0, fastavg, kbmap, bat, tmhel);
+    tmhel = mktimes("%H:%M", tzhelsinki);
+    /* network = networkstatus(); */
+
+    status = smprintf("| Temp: %s | Load: %s | Kb: %s | Bat: %s | Time: %s ", t0, fastavg, kbmap, bat, tmhel);
     setstatus(status);
 
-    free(surfs);
-    /* free(kbmap); */
+    free(kbmap);
     free(t0);
     free(t1);
     free(avgs);
     free(bat);
-    free(tmhel);
     free(status);
+
+    free(tmhel);
+    free(network);
   }
 
   XCloseDisplay(dpy);

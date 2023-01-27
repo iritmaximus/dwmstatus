@@ -11,6 +11,5 @@ if [ -e $HOME/.xinitrc ];
 then
 	cat $HOME/.xinitrc | grep dwmstatus | sh
 else
-	dwmstatus &
+	dwmstatus 2>&1 /dev/null &
 fi
-
