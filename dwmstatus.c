@@ -203,15 +203,15 @@ execscript(char *cmd)
   return smprintf("%s", retval);
 }
 
-char *
-networkstatus()
-{
-  /* char *network = execscript("nmcli -f SSID,IN-USE device wifi | grep '*'"); */
-  /* char *network = execscript("nmcli -t -f NAME c show --active"); */
-  char *ret = execscript("nmcli");
+/* char * */
+/* networkstatus() */
+/* { */
+/*   /1* char *network = execscript("nmcli -f SSID,IN-USE device wifi | grep '*'"); *1/ */
+/*   /1* char *network = execscript("nmcli -t -f NAME c show --active"); *1/ */
+/*   char *ret = execscript("nmcli"); */
 
-  return smprintf("%s", ret);
-}
+/*   return smprintf("%s", ret); */
+/* } */
 
 int
 main(void)
@@ -225,7 +225,7 @@ main(void)
   char *kbmap;
 
   char *tmhel;
-  char *network;
+  /* char *network; */
 
   if (!(dpy = XOpenDisplay(NULL))) {
     fprintf(stderr, "dwmstatus: cannot open display.\n");
@@ -254,7 +254,7 @@ main(void)
     free(status);
 
     free(tmhel);
-    free(network);
+    /* free(network); */
   }
 
   XCloseDisplay(dpy);
